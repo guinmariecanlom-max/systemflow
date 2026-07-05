@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   LayoutDashboard,
   GitBranch,
@@ -12,21 +14,20 @@ import {
   ChevronDown,
   Zap,
 } from "lucide-react";
-import { useState } from "react";
 
 const nav = [
-  { name: "Dashboard", icon: LayoutDashboard },
-  { name: "Pipeline", icon: GitBranch },
-  { name: "Integrations", icon: Plug },
-  { name: "Reports", icon: BarChart3 },
-  { name: "Alerts", icon: Bell, badge: 3 },
-  { name: "Tasks", icon: CheckSquare },
-  { name: "Data Explorer", icon: Database },
-  { name: "Settings", icon: Settings },
+  { name: "Dashboard", href: "/", icon: LayoutDashboard },
+  { name: "Pipeline", href: "/pipeline", icon: GitBranch },
+  { name: "Integrations", href: "/integrations", icon: Plug },
+  { name: "Reports", href: "/reports", icon: BarChart3 },
+  { name: "Alerts", href: "/alerts", icon: Bell, badge: 3 },
+  { name: "Tasks", href: "/tasks", icon: CheckSquare },
+  { name: "Data Explorer", href: "/data-explorer", icon: Database },
+  { name: "Settings", href: "/settings", icon: Settings },
 ];
 
 export default function Sidebar() {
-  const [active, setActive] = useState("Dashboard");
+  const pathname = usePathname();
 
   return (
     <aside className="sticky top-0 hidden h-screen w-60 shrink-0 flex-col bg-ink text-white md:flex">
@@ -41,11 +42,14 @@ export default function Sidebar() {
 
       <nav className="flex-1 space-y-1 px-3">
         {nav.map((item) => {
-          const isActive = active === item.name;
+          const isActive =
+            item.href === "/"
+              ? pathname === "/"
+              : pathname.startsWith(item.href);
           return (
-            <button
+            <Link
               key={item.name}
-              onClick={() => setActive(item.name)}
+              href={item.href}
               className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors ${
                 isActive
                   ? "bg-accent font-semibold text-ink"
@@ -59,7 +63,7 @@ export default function Sidebar() {
                   {item.badge}
                 </span>
               )}
-            </button>
+            </Link>
           );
         })}
       </nav>

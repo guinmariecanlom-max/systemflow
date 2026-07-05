@@ -1,4 +1,4 @@
-import { ArrowDown, ArrowUp } from "lucide-react";
+import { ArrowDown, ArrowUp, Clock } from "lucide-react";
 import type { Trend } from "@/lib/data";
 
 export function Delta({
@@ -73,6 +73,55 @@ export function SectionCard({
       </div>
       {children}
     </section>
+  );
+}
+
+export function PageHeader({
+  title,
+  subtitle,
+  action,
+}: {
+  title: string;
+  subtitle?: string;
+  action?: React.ReactNode;
+}) {
+  return (
+    <header className="flex flex-wrap items-end justify-between gap-4">
+      <div>
+        <h1 className="text-2xl font-bold">{title}</h1>
+        {subtitle && <p className="mt-1 text-sm text-muted">{subtitle}</p>}
+      </div>
+      {action}
+    </header>
+  );
+}
+
+export function StatusPill({ connected }: { connected: boolean }) {
+  return (
+    <span
+      className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold ${
+        connected ? "bg-up/10 text-up" : "bg-line text-muted"
+      }`}
+    >
+      <span
+        className={`h-1.5 w-1.5 rounded-full ${connected ? "bg-up" : "bg-muted"}`}
+      />
+      {connected ? "Connected" : "Not connected"}
+    </span>
+  );
+}
+
+export function ComingSoon({ note }: { note?: string }) {
+  return (
+    <div className="card flex flex-col items-center justify-center gap-3 p-16 text-center">
+      <span className="flex h-12 w-12 items-center justify-center rounded-full bg-surface">
+        <Clock size={20} className="text-muted" strokeWidth={1.8} />
+      </span>
+      <p className="text-sm font-semibold">Coming soon</p>
+      <p className="max-w-sm text-xs text-muted">
+        {note ?? "This section is on the roadmap and will light up in a future release."}
+      </p>
+    </div>
   );
 }
 
