@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-surface text-ink antialiased;
+}
+
+@layer components {
+  .card {
+    @apply rounded-xl2 border border-line bg-card shadow-card;
+  }
+  .chip-up {
+    @apply text-up text-xs font-medium;
+  }
+  .chip-down {
+    @apply text-down text-xs font-medium;
+  }
+}
