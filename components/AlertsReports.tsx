@@ -1,20 +1,24 @@
+import Link from "next/link";
 import { alerts, reports } from "@/lib/data";
 import { SectionCard } from "@/components/ui";
 import { AlertTriangle, CalendarDays, Download, Info } from "lucide-react";
 
-function ViewAll() {
+function ViewAll({ href }: { href: string }) {
   return (
-    <button className="text-xs font-semibold underline decoration-accent decoration-2 underline-offset-4 hover:decoration-4">
+    <Link
+      href={href}
+      className="text-xs font-semibold underline decoration-accent decoration-2 underline-offset-4 hover:decoration-4"
+    >
       View all
-    </button>
+    </Link>
   );
 }
 
 export function RecentAlerts() {
   return (
-    <SectionCard title="Recent Alerts" action={<ViewAll />}>
+    <SectionCard title="Recent Alerts" action={<ViewAll href="/alerts" />}>
       <ul className="space-y-3">
-        {alerts.map((a) => (
+        {alerts.slice(0, 3).map((a) => (
           <li
             key={a.title}
             className="flex items-start gap-3 rounded-xl border border-line p-3"
@@ -52,7 +56,7 @@ export function RecentAlerts() {
 
 export function AutomatedReports() {
   return (
-    <SectionCard title="Automated Reports" action={<ViewAll />}>
+    <SectionCard title="Automated Reports" action={<ViewAll href="/reports" />}>
       <ul className="divide-y divide-line">
         {reports.map((r) => (
           <li key={r.name} className="flex items-center gap-3 py-3 first:pt-0 last:pb-0">

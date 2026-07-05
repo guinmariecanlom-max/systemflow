@@ -113,23 +113,122 @@ export const revenueTrend = [
   { day: "May 18", store: 52800, email: 15300, spend: 7400 },
 ];
 
-export const alerts = [
+export type AlertLevel = "warn" | "info";
+
+export interface Alert {
+  level: AlertLevel;
+  title: string;
+  detail: string;
+  platform: "Meta" | "Shopify" | "Klaviyo";
+  time: string;
+  tag: string;
+}
+
+export const alerts: Alert[] = [
   {
-    level: "warn" as const,
+    level: "warn",
     title: "ROAS dropped below 3.0 for TOF | Prospecting | Broad",
+    detail: "Return on ad spend fell to 2.74, down from 3.61 last week. Consider pausing or refreshing creative.",
+    platform: "Meta",
     time: "May 17, 2025 · 9:15 AM",
     tag: "Action Needed",
   },
   {
-    level: "info" as const,
+    level: "warn",
+    title: "Daily spend 38% above 7-day average on Meta",
+    detail: "Spend hit $2,410 vs a $1,745 average. Check for a runaway campaign or bid change.",
+    platform: "Meta",
+    time: "May 17, 2025 · 8:40 AM",
+    tag: "Action Needed",
+  },
+  {
+    level: "info",
     title: 'Klaviyo flow "Checkout Abandonment" revenue up 27.8%',
+    detail: "Attributed revenue reached $6,231 this week, its best 7-day window this quarter.",
+    platform: "Klaviyo",
     time: "May 17, 2025 · 8:05 AM",
     tag: "Info",
   },
+  {
+    level: "info",
+    title: "Shopify conversion rate improved to 2.35%",
+    detail: "Up 9.4% week over week, driven by returning-visitor purchases.",
+    platform: "Shopify",
+    time: "May 16, 2025 · 8:05 AM",
+    tag: "Info",
+  },
+  {
+    level: "warn",
+    title: "CPA above target ($40) on Lookalike | 1% | Purchasers",
+    detail: "Cost per acquisition reached $44.12 against a $40 target. Monitor for another 48 hours.",
+    platform: "Meta",
+    time: "May 15, 2025 · 9:30 AM",
+    tag: "Action Needed",
+  },
+];
+
+export interface AlertRule {
+  name: string;
+  condition: string;
+  channel: string;
+  enabled: boolean;
+}
+
+export const alertRules: AlertRule[] = [
+  { name: "ROAS below threshold", condition: "ROAS < 3.0 on any active campaign", channel: "Email + Slack", enabled: true },
+  { name: "Spend spike", condition: "Daily spend > 130% of 7-day average", channel: "Email", enabled: true },
+  { name: "CPA above target", condition: "CPA > $40 on any campaign", channel: "Slack", enabled: true },
+  { name: "Flow revenue drop", condition: "Klaviyo flow revenue down > 20% WoW", channel: "Slack", enabled: false },
+  { name: "Conversion rate drop", condition: "Shopify CVR down > 15% WoW", channel: "Email", enabled: true },
+];
+
+export type TaskPriority = "high" | "medium" | "low";
+
+export interface Task {
+  id: string;
+  title: string;
+  priority: TaskPriority;
+  due: string;
+  source: string;
+  done: boolean;
+}
+
+export const tasks: Task[] = [
+  { id: "t1", title: "Refresh creative for TOF | Prospecting | Broad (ROAS < 3.0)", priority: "high", due: "May 20, 2025", source: "Meta Ads", done: false },
+  { id: "t2", title: "Review runaway spend on Meta daily budget", priority: "high", due: "May 19, 2025", source: "Meta Ads", done: false },
+  { id: "t3", title: "Scale budget on Retargeting | 7D | All (ROAS 6.71)", priority: "medium", due: "May 21, 2025", source: "Meta Ads", done: false },
+  { id: "t4", title: "Add abandoned-cart SMS step to Klaviyo flow", priority: "medium", due: "May 22, 2025", source: "Klaviyo", done: false },
+  { id: "t5", title: "Audit Shopify shipping settings after CVR bump", priority: "low", due: "May 23, 2025", source: "Shopify", done: true },
+  { id: "t6", title: "Send weekly report recap to founder", priority: "low", due: "May 19, 2025", source: "SystemFlow", done: true },
 ];
 
 export const reports = [
   { name: "Weekly Performance Report", date: "May 19, 2025 · 8:00 AM", status: "Delivered" },
   { name: "Campaign Anomalies Report", date: "May 19, 2025 · 8:00 AM", status: "Delivered" },
   { name: "Klaviyo Flow Performance Report", date: "May 19, 2025 · 8:00 AM", status: "Delivered" },
+];
+
+export const pipelineRun = {
+  status: "success" as const,
+  startedAt: "May 19, 2025 · 8:00 AM",
+  duration: "3m 42s",
+  records: 18432,
+  nextRun: "May 26, 2025 · 8:00 AM",
+};
+
+export interface PipelineStage {
+  id: "meta" | "shopify" | "klaviyo" | "ai" | "dashboard";
+  name: string;
+  status: "success";
+  duration: string;
+  records: string;
+  detail: string;
+}
+
+export const pipelineStages: PipelineStage[] = [
+  { id: "meta", name: "Meta Ads Manager", status: "success", duration: "48s", records: "342 conversions", detail: "Marketing API · insights, last 7 days" },
+  { id: "shopify", name: "Shopify + GA4", status: "success", duration: "1m 12s", records: "512 orders", detail: "Admin GraphQL API + GA4 Data API" },
+  { id: "klaviyo", name: "Klaviyo", status: "success", duration: "39s", records: "87 placed orders", detail: "Reporting API · flows & campaigns" },
+  { id: "ai", name: "Claude AI", status: "success", duration: "54s", records: "3 reports drafted", detail: "Summaries, anomalies & recommendations" },
+  { id: "dashboard", name: "Dashboard", status: "success", duration: "9s", records: "Published", detail: "Rendered & delivered to stakeholders" },
 ];
